@@ -11,7 +11,7 @@ type CharacterData struct {
 
 type Item struct {
 	Name        string   `json:"name"`        
-	BaseType    string   `json:"typeLine"`    /
+	BaseType    string   `json:"typeLine"`    
 	Slot        string   `json:"inventoryId"` 
 	Links       int      `json:"-"`           
 	ExplicitMods []string `json:"explicitMods"`

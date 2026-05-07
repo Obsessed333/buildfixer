@@ -5,16 +5,17 @@ import(
 	"fmt"
 	"io/ioutil"
 	"os"
+	"github.com/obsessed333/buildfixer/internal/models"
 )
 
-func GetCharacter(accountName, charName string) (*CharacterData, error) {
+func GetCharacter(accountName, charName string) (*models.CharacterData, error) {
 	cacheFile := fmt.Sprintf("cache_%s_%s.json", accountName, charName)
 
 	_, err := os.Stat(cacheFile)
 	if err == nil{
 		fmt.Println("--- Loading from Local Cache ---")
 		fileData, err := ioutil.ReadFile(cacheFile)
-		var result CharacterData
+		var result models.CharacterData
 		err = json.Unmarshal(fileData, &result)
 		return &result, err
 	}
