@@ -1,40 +1,75 @@
 package models
 
-type CharacterData struct {
-	Items      []Item `json:"items"`
-	Character  struct {
-		Name       string `json:"name"`
-		Class      string `json:"class"`
-		Level      int    `json:"level"`
-	} `json:"character"`
+import "encoding/xml"
+
+
+type PoBData struct {
+	XMLName xml.Name `xml:"PathOfBuilding"`
+	Build   Build    `xml:"Build"`
+	Skills  Skills   `xml:"Skills"`
+	Tree    Tree     `xml:"Tree"`
+	Items   Items    `xml:"Items"`
 }
 
-type Item struct {
-	Name        string   `json:"name"`        
-	BaseType    string   `json:"typeLine"`    
-	Slot        string   `json:"inventoryId"` 
-	Links       int      `json:"-"`           
-	ExplicitMods []string `json:"explicitMods"`
-	ImplicitMods []string `json:"implicitMods"`
-	EnchantMods  []string `json:"enchantMods"`
-	Sockets      []Socket `json:"sockets"`
+type Build struct {
+	Level int    `xml:"level,attr"`
+	Class string `xml:"className,attr"`
 }
 
-type Socket struct {
-	Group int    `json:"group"` // Items in the same group are linked
-	Attr  string `json:"attr"`  // Strength (R), Dexterity (G), Intelligence (B)
+type Skills struct {
+	SkillSets []SkillSet `xml:"SkillSet"`
 }
 
-type PassiveTreeData struct {
-	Hashes []int `json:"hashes"` // These IDs correspond to nodes on the tree
+type SkillSet struct {
+	Skills []PoBSkill `xml:"Skill"`
+}
+
+type PoBSkill struct {
+	Enabled string      `xml:"enabled,attr"`
+	GemList []PoBGem    `xml:"Gem"`
+}
+
+type PoBGem struct {
+	NameSpec    string `xml:"nameSpec,attr"`
+	Level       int    `xml:"level,attr"`
+	Quality     int    `xml:"quality,attr"`
+	Enabled     string `xml:"enabled,attr"`
+}
+
+type Tree struct {
+	ActiveSpec int    `xml:"activeSpec,attr"`
+	Specs      []Spec `xml:"Spec"`
+}
+
+type Spec struct {
+	Nodes string `xml:"nodes,attr"` 
+}
+
+type Items struct {
+	ActiveItemSet int       `xml:"activeItemSet,attr"`
+	ItemList      []PoBItem `xml:"Item"`
+	ItemSets      []ItemSet `xml:"ItemSet"`
+}
+
+type ItemSet struct {
+	ID    int    `xml:"id,attr"`
+	Slots []Slot `xml:"Slot"` 
+}
+
+type PoBItem struct {
+	ID   int    `xml:"id,attr"`
+	Raw  string `xml:",chardata"` 
+}
+
+type Slot struct {
+	Name   string `xml:"name,attr"`   // e.g., "Body Armour"
+	ItemID int    `xml:"itemId,attr"` // References PoBItem.ID
 }
 
 type AIGapAnalysisRequest struct {
-	AccountName    string            `json:"account_name"`
 	CharacterClass string            `json:"class"`
 	CurrentLevel   int               `json:"level"`
-	CurrentGear    map[string]string `json:"current_gear"` // Slot: ItemName
-	KeyStats       map[string]int    `json:"stats"`        // Life: 3500, ChaosRes: -20
-	Budget         string            `json:"budget"`       // 10 Chaos" or "50 Divine
-	MetaComparison []string          `json:"missing_meta_items"` // Missing chase items(Replica Farrul's Fur for Flicker Strike for example)
+	CurrentGear    map[string]string `json:"current_gear"`      
+	Budget         string            `json:"budget"`          
+	TreeNodes      string            `json:"tree_nodes"`        
 }

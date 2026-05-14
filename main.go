@@ -8,13 +8,14 @@ import (
 
 
 func main(){
-	char, err := GetCharacter("obsessedw-7623", "RAPE_PLUNDER_RAVAGE")
+	testURL := "https://pobb.in/l8Tyfca2Jjaa"
+
+	pobData, err := FetchFromPobbIn(testURL)
 	if err != nil{
-		panic(err)
+		fmt.Printf("Error execution failed: %v\n", err)
+		return
 	}
 
-	fmt.Printf("Successfully loaded %s, a level %d %s\n",
-		char.Character.Name,
-		char.Character.Level,
-		char.Character.Class)
+	printHelper(pobData)
 }
+	
