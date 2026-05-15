@@ -11,6 +11,20 @@ type PoBData struct {
 	Items   Items    `xml:"Items"`
 }
 
+type PobbInStatsResponse struct {
+	Stats struct {
+		Life          int     `json:"life"`
+		EnergyShield  int     `json:"energyShield"`
+		Mana          int     `json:"mana"`
+		FireResist    int     `json:"fireResist"`
+		ColdResist    int     `json:"coldResist"`
+		LightningResist int   `json:"lightningResist"`
+		ChaosResist   int     `json:"chaosResist"`
+		TotalDPS      float64 `json:"totalDPS"`
+	} `json:"stats"`
+	Keystones []string `json:"keystones"` // e.g., ["Mind Over Matter", "Chaos Inoculation"]
+}
+
 type Build struct {
 	Level int    `xml:"level,attr"`
 	Class string `xml:"className,attr"`
